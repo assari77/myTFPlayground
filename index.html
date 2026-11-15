@@ -53,69 +53,6 @@
           <span id="epoch-counter" class="epoch-value">000,000</span>
         </div>
       </div>
-
-      <div class="hyperparams">
-        <div class="control-group">
-          <label for="select-lr">Learning rate</label>
-          <select id="select-lr">
-            <option value="0.00001">0.00001</option>
-            <option value="0.0001">0.0001</option>
-            <option value="0.0003">0.0003</option>
-            <option value="0.001">0.001</option>
-            <option value="0.003">0.003</option>
-            <option value="0.01">0.01</option>
-            <option value="0.03" selected>0.03</option>
-            <option value="0.1">0.1</option>
-            <option value="0.3">0.3</option>
-            <option value="1">1</option>
-            <option value="3">3</option>
-            <option value="10">10</option>
-          </select>
-        </div>
-
-        <div class="control-group">
-          <label for="select-activation">Activation</label>
-          <select id="select-activation">
-            <option value="tanh" selected>Tanh</option>
-            <option value="relu">ReLU</option>
-            <option value="sigmoid">Sigmoid</option>
-            <option value="linear">Linear</option>
-          </select>
-        </div>
-
-        <div class="control-group">
-          <label for="select-reg">Regularization</label>
-          <select id="select-reg">
-            <option value="none" selected>None</option>
-            <option value="l1">L1</option>
-            <option value="l2">L2</option>
-          </select>
-        </div>
-
-        <div class="control-group">
-          <label for="select-reg-rate">Regularization rate</label>
-          <select id="select-reg-rate">
-            <option value="0" selected>0</option>
-            <option value="0.001">0.001</option>
-            <option value="0.003">0.003</option>
-            <option value="0.01">0.01</option>
-            <option value="0.03">0.03</option>
-            <option value="0.1">0.1</option>
-            <option value="0.3">0.3</option>
-            <option value="1">1</option>
-            <option value="3">3</option>
-            <option value="10">10</option>
-          </select>
-        </div>
-
-        <div class="control-group">
-          <label for="select-problem">Problem type</label>
-          <select id="select-problem">
-            <option value="classification" selected>Classification</option>
-            <option value="regression">Regression</option>
-          </select>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -129,32 +66,6 @@
       </div>
 
       <div id="dataset-list" class="dataset-grid" role="radiogroup" aria-label="Datasets"></div>
-
-      <div class="slider-group">
-        <div class="slider-label-row">
-          <label for="slider-train-ratio">Ratio of training to test data:</label>
-          <span id="val-train-ratio" class="slider-val">50%</span>
-        </div>
-        <input id="slider-train-ratio" type="range" min="10" max="90" step="10" value="50" />
-      </div>
-
-      <div class="slider-group">
-        <div class="slider-label-row">
-          <label for="slider-noise">Noise:</label>
-          <span id="val-noise" class="slider-val">0</span>
-        </div>
-        <input id="slider-noise" type="range" min="0" max="50" step="5" value="0" />
-      </div>
-
-      <div class="slider-group">
-        <div class="slider-label-row">
-          <label for="slider-batch">Batch size:</label>
-          <span id="val-batch" class="slider-val">10</span>
-        </div>
-        <input id="slider-batch" type="range" min="1" max="30" step="1" value="10" />
-      </div>
-
-      <button id="btn-regenerate" class="btn-secondary">Regenerate</button>
     </aside>
 
     <!-- Center Column: Features & Network -->

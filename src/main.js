@@ -55,19 +55,7 @@ const el = {
   iconPlay: document.getElementById("icon-play"),
   iconPause: document.getElementById("icon-pause"),
   epochCounter: document.getElementById("epoch-counter"),
-  selectLr: document.getElementById("select-lr"),
-  selectActivation: document.getElementById("select-activation"),
-  selectReg: document.getElementById("select-reg"),
-  selectRegRate: document.getElementById("select-reg-rate"),
-  selectProblem: document.getElementById("select-problem"),
   datasetList: document.getElementById("dataset-list"),
-  sliderTrainRatio: document.getElementById("slider-train-ratio"),
-  valTrainRatio: document.getElementById("val-train-ratio"),
-  sliderNoise: document.getElementById("slider-noise"),
-  valNoise: document.getElementById("val-noise"),
-  sliderBatch: document.getElementById("slider-batch"),
-  valBatch: document.getElementById("val-batch"),
-  btnRegenerate: document.getElementById("btn-regenerate"),
   btnAddLayer: document.getElementById("btn-add-layer"),
   btnRemoveLayer: document.getElementById("btn-remove-layer"),
   hiddenLayersLabel: document.getElementById("hidden-layers-label"),
@@ -573,48 +561,6 @@ el.btnReset.addEventListener("click", resetNetwork);
 el.btnStep.addEventListener("click", () => {
   setPlaying(false);
   stepEpoch();
-});
-
-el.selectLr.addEventListener("change", (e) => {
-  state.learningRate = parseFloat(e.target.value);
-});
-el.selectActivation.addEventListener("change", (e) => {
-  state.activationKey = e.target.value;
-  resetNetwork();
-});
-el.selectReg.addEventListener("change", (e) => {
-  state.regKey = e.target.value;
-  resetNetwork();
-});
-el.selectRegRate.addEventListener("change", (e) => {
-  state.regRate = parseFloat(e.target.value);
-});
-el.selectProblem.addEventListener("change", (e) => {
-  state.problemType = e.target.value;
-  renderDatasetCards();
-  regenerateData();
-  resetNetwork();
-});
-
-el.sliderTrainRatio.addEventListener("input", (e) => {
-  state.trainRatio = parseInt(e.target.value, 10);
-  el.valTrainRatio.textContent = `${state.trainRatio}%`;
-  regenerateData();
-  updateUI();
-});
-el.sliderNoise.addEventListener("input", (e) => {
-  state.noise = parseInt(e.target.value, 10);
-  el.valNoise.textContent = `${state.noise}`;
-  regenerateData();
-  updateUI();
-});
-el.sliderBatch.addEventListener("input", (e) => {
-  state.batchSize = parseInt(e.target.value, 10);
-  el.valBatch.textContent = `${state.batchSize}`;
-});
-el.btnRegenerate.addEventListener("click", () => {
-  regenerateData();
-  updateUI();
 });
 
 el.btnAddLayer.addEventListener("click", () => {
