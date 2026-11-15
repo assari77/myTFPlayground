@@ -35,7 +35,7 @@ const state = {
   trainRatio: 50,
   noise: 0,
   batchSize: 10,
-  hiddenLayers: [4, 2],
+  hiddenLayers: [2, 2],
   activeFeatures: new Set(["x", "y"]),
   showTest: false,
   discretize: false,
@@ -168,13 +168,16 @@ function stepEpoch() {
 
 function updateUI() {
   if (!state.network) return;
-  const trainL = computeLoss(state.network, state.trainData, constructInput);
-  const testL = computeLoss(state.network, state.testData, constructInput);
 
-  el.trainLoss.textContent = trainL.toFixed(3);
-  el.testLoss.textContent = testL.toFixed(3);
+  if (state.epoch === 0) {
+    el.trainLoss.textContent = "0.000";
+    el.testLoss.textContent = "0.000";
+  } else {
+    const trainL = computeLoss(state.network, state.trainData, constructInput);
+    const testL = computeLoss(state.network, state.testData, constructInput);
 
-  if (state.epoch > 0) {
+    el.trainLoss.textContent = trainL.toFixed(3);
+    el.testLoss.textContent = testL.toFixed(3);
     lossChart.addPoint(trainL, testL);
 
     if (state.stabilizedEpoch === null) {
