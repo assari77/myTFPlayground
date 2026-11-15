@@ -186,9 +186,9 @@ export function regressGaussian(numSamples, noise, rng = Math.random) {
 }
 
 export const CLASSIFICATION_DATASETS = {
-  circle: { name: "Circle", generator: classifyCircleData },
-  xor: { name: "Exclusive OR", generator: classifyXORData },
   gauss: { name: "Gaussian", generator: classifyTwoGaussData },
+  xor: { name: "Exclusive OR", generator: classifyXORData },
+  circle: { name: "Circle", generator: classifyCircleData },
   spiral: { name: "Spiral", generator: classifySpiralData },
 };
 

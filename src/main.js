@@ -29,7 +29,9 @@ const state = {
   regKey: "none",
   regRate: 0,
   problemType: "classification",
-  datasetKey: "circle",
+  datasetKey: "gauss",
+  lowLossStreak: 0,
+  stabilizedEpoch: null,
   trainRatio: 50,
   noise: 0,
   batchSize: 10,
@@ -52,6 +54,7 @@ const el = {
   btnStart: document.getElementById("btn-start"),
   btnStop: document.getElementById("btn-stop"),
   epochCounter: document.getElementById("epoch-counter"),
+  stabilizedBadge: document.getElementById("stabilized-badge"),
   datasetList: document.getElementById("dataset-list"),
   btnAddLayer: document.getElementById("btn-add-layer"),
   btnRemoveLayer: document.getElementById("btn-remove-layer"),
@@ -115,7 +118,11 @@ function regenerateData() {
 function resetNetwork() {
   setPlaying(false);
   state.epoch = 0;
+  state.lowLossStreak = 0;
+  state.stabilizedEpoch = null;
   el.epochCounter.textContent = formatEpoch(0);
+  el.stabilizedBadge.hidden = true;
+  el.stabilizedBadge.textContent = "";
   lossChart.reset();
 
   const inputIds = getActiveFeatureIds();
@@ -169,6 +176,19 @@ function updateUI() {
 
   if (state.epoch > 0) {
     lossChart.addPoint(trainL, testL);
+
+    if (state.stabilizedEpoch === null) {
+      if (testL < 0.005) {
+        state.lowLossStreak++;
+        if (state.lowLossStreak >= 5) {
+          state.stabilizedEpoch = state.epoch - 4;
+          el.stabilizedBadge.textContent = `Test loss < 0.005 @ ${formatEpoch(state.stabilizedEpoch)}`;
+          el.stabilizedBadge.hidden = false;
+        }
+      } else {
+        state.lowLossStreak = 0;
+      }
+    }
   }
 
   updateHeatmaps();
