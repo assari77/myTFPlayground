@@ -15,7 +15,7 @@ import {
   generateData,
   shuffle,
 } from "./datasets.js";
-import { renderHeatmap, evaluateGrid, valueToCssColor } from "./heatmap.js";
+import { renderHeatmap, evaluateGrid } from "./heatmap.js";
 import { LossChart } from "./lossChart.js";
 
 const GRID_MAIN = 48;
@@ -45,8 +45,7 @@ const state = {
   hoveredNodeId: null,
   nodeCanvases: new Map(), // nodeId -> HTMLCanvasElement
   linkPaths: new Map(), // linkId -> SVGPathElement
-  biasTags: new Map(), // nodeId -> HTMLElement
-  inspectorTarget: null, // { type: 'link'|'bias', ref }
+  inspectorTarget: null, // { type: 'link', ref }
 };
 
 // DOM references
@@ -196,7 +195,6 @@ function updateUI() {
 
   updateHeatmaps();
   updateLinkStyles();
-  updateBiasTags();
 }
 
 function updateHeatmaps() {
@@ -283,17 +281,6 @@ function updateLinkStyles() {
   });
 }
 
-function updateBiasTags() {
-  if (!state.network) return;
-  forEachNode(state.network, true, (node) => {
-    const tag = state.biasTags.get(node.id);
-    if (tag) {
-      tag.style.backgroundColor = valueToCssColor(Math.tanh(node.bias));
-      tag.title = `Bias: ${node.bias.toFixed(3)} (click to edit)`;
-    }
-  });
-}
-
 function renderDatasetCards() {
   el.datasetList.innerHTML = "";
   const registry =
@@ -339,7 +326,6 @@ function renderNetworkDOM() {
   el.networkSvg.innerHTML = "";
   state.nodeCanvases.clear();
   state.linkPaths.clear();
-  state.biasTags.clear();
   hidePopover();
 
   const numHidden = state.hiddenLayers.length;
@@ -492,18 +478,9 @@ function createNeuronElement(node) {
     updateHeatmaps();
   });
 
-  const biasTag = document.createElement("div");
-  biasTag.className = "bias-tag";
-  biasTag.addEventListener("click", (e) => {
-    e.stopPropagation();
-    openPopover("Bias", node.bias, e.currentTarget, { type: "bias", ref: node });
-  });
-
   wrap.appendChild(card);
-  wrap.appendChild(biasTag);
 
   state.nodeCanvases.set(node.id, canvas);
-  state.biasTags.set(node.id, biasTag);
   return wrap;
 }
 
@@ -605,8 +582,6 @@ el.popoverApply.addEventListener("click", () => {
     if (state.inspectorTarget.type === "link") {
       state.inspectorTarget.ref.weight = val;
       state.inspectorTarget.ref.isDead = false;
-    } else if (state.inspectorTarget.type === "bias") {
-      state.inspectorTarget.ref.bias = val;
     }
     updateUI();
   }
