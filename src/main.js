@@ -66,8 +66,6 @@ const el = {
   testLoss: document.getElementById("test-loss"),
   trainLoss: document.getElementById("train-loss"),
   lossChartCanvas: document.getElementById("loss-chart"),
-  chkShowTest: document.getElementById("chk-show-test"),
-  chkDiscretize: document.getElementById("chk-discretize"),
   hoverBadge: document.getElementById("hover-badge"),
   popover: document.getElementById("inspector-popover"),
   popoverTitle: document.getElementById("popover-title"),
@@ -574,15 +572,6 @@ el.btnRemoveLayer.addEventListener("click", () => {
     state.hiddenLayers.pop();
     resetNetwork();
   }
-});
-
-el.chkShowTest.addEventListener("change", (e) => {
-  state.showTest = e.target.checked;
-  updateHeatmaps();
-});
-el.chkDiscretize.addEventListener("change", (e) => {
-  state.discretize = e.target.checked;
-  updateHeatmaps();
 });
 
 el.popoverApply.addEventListener("click", () => {
