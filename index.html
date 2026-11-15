@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neural Network Playground</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <div>
+          <h1>Tinker With a <strong>Neural Network</strong></h1>
+          <p class="subtitle">Interactive browser-based neural network playground</p>
+        </div>
+      </div>
+      <div class="header-shortcuts">
+        <span class="kbd-hint"><kbd>Space</kbd> Play/Pause</span>
+        <span class="kbd-hint"><kbd>S</kbd> Step</span>
+        <span class="kbd-hint"><kbd>R</kbd> Reset</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Top Control Bar -->
+  <section class="top-controls">
+    <div class="controls-inner">
+      <div class="playback-controls">
+        <button id="btn-reset" class="icon-btn" title="Reset the network (R)" aria-label="Reset">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
+          </svg>
+        </button>
+        <button id="btn-play" class="play-btn" title="Run / Pause (Space)" aria-label="Play or Pause">
+          <svg id="icon-play" viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          <svg id="icon-pause" viewBox="0 0 24 24" width="26" height="26" fill="currentColor" hidden>
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+          </svg>
+        </button>
+        <button id="btn-step" class="icon-btn" title="Step 1 epoch (S)" aria-label="Step">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+          </svg>
+        </button>
+        <div class="epoch-box">
+          <span class="control-label">Epoch</span>
+          <span id="epoch-counter" class="epoch-value">000,000</span>
+        </div>
+      </div>
+
+      <div class="hyperparams">
+        <div class="control-group">
+          <label for="select-lr">Learning rate</label>
+          <select id="select-lr">
+            <option value="0.00001">0.00001</option>
+            <option value="0.0001">0.0001</option>
+            <option value="0.0003">0.0003</option>
+            <option value="0.001">0.001</option>
+            <option value="0.003">0.003</option>
+            <option value="0.01">0.01</option>
+            <option value="0.03" selected>0.03</option>
+            <option value="0.1">0.1</option>
+            <option value="0.3">0.3</option>
+            <option value="1">1</option>
+            <option value="3">3</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="select-activation">Activation</label>
+          <select id="select-activation">
+            <option value="tanh" selected>Tanh</option>
+            <option value="relu">ReLU</option>
+            <option value="sigmoid">Sigmoid</option>
+            <option value="linear">Linear</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="select-reg">Regularization</label>
+          <select id="select-reg">
+            <option value="none" selected>None</option>
+            <option value="l1">L1</option>
+            <option value="l2">L2</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="select-reg-rate">Regularization rate</label>
+          <select id="select-reg-rate">
+            <option value="0" selected>0</option>
+            <option value="0.001">0.001</option>
+            <option value="0.003">0.003</option>
+            <option value="0.01">0.01</option>
+            <option value="0.03">0.03</option>
+            <option value="0.1">0.1</option>
+            <option value="0.3">0.3</option>
+            <option value="1">1</option>
+            <option value="3">3</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="select-problem">Problem type</label>
+          <select id="select-problem">
+            <option value="classification" selected>Classification</option>
+            <option value="regression">Regression</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Workspace -->
+  <main class="workspace">
+    <!-- Left Column: Data -->
+    <aside class="panel data-panel">
+      <div class="panel-header">
+        <h2>DATA</h2>
+        <span class="panel-sub">Which dataset do you want to use?</span>
+      </div>
+
+      <div id="dataset-list" class="dataset-grid" role="radiogroup" aria-label="Datasets"></div>
+
+      <div class="slider-group">
+        <div class="slider-label-row">
+          <label for="slider-train-ratio">Ratio of training to test data:</label>
+          <span id="val-train-ratio" class="slider-val">50%</span>
+        </div>
+        <input id="slider-train-ratio" type="range" min="10" max="90" step="10" value="50" />
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-label-row">
+          <label for="slider-noise">Noise:</label>
+          <span id="val-noise" class="slider-val">0</span>
+        </div>
+        <input id="slider-noise" type="range" min="0" max="50" step="5" value="0" />
+      </div>
+
+      <div class="slider-group">
+        <div class="slider-label-row">
+          <label for="slider-batch">Batch size:</label>
+          <span id="val-batch" class="slider-val">10</span>
+        </div>
+        <input id="slider-batch" type="range" min="1" max="30" step="1" value="10" />
+      </div>
+
+      <button id="btn-regenerate" class="btn-secondary">Regenerate</button>
+    </aside>
+
+    <!-- Center Column: Features & Network -->
+    <section class="panel network-panel">
+      <div class="network-toolbar">
+        <div class="features-header">
+          <h2>FEATURES</h2>
+          <span class="panel-sub">Which properties do you want to feed in?</span>
+        </div>
+        <div class="layers-control">
+          <button id="btn-remove-layer" class="circle-btn" title="Remove hidden layer" aria-label="Remove hidden layer">−</button>
+          <button id="btn-add-layer" class="circle-btn" title="Add hidden layer" aria-label="Add hidden layer">+</button>
+          <span id="hidden-layers-label" class="layers-label">2 hidden layers</span>
+        </div>
+      </div>
+
+      <div class="network-stage" id="network-stage">
+        <!-- SVG layer for curved weight connections -->
+        <svg id="network-svg" class="network-svg"></svg>
+        <!-- Columns for Input features, Hidden layers, and Output -->
+        <div id="network-columns" class="network-columns"></div>
+      </div>
+
+      <!-- Popover for inspecting/editing a weight or bias -->
+      <div id="inspector-popover" class="inspector-popover" hidden>
+        <div class="popover-title" id="popover-title">Weight</div>
+        <div class="popover-row">
+          <input type="number" id="popover-input" step="0.05" />
+          <button id="popover-apply" class="btn-small">Set</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Column: Output -->
+    <aside class="panel output-panel">
+      <div class="panel-header">
+        <h2>OUTPUT</h2>
+        <div id="hover-badge" class="hover-badge" hidden>Previewing node</div>
+      </div>
+
+      <div class="metrics-box">
+        <div class="metric-row">
+          <span class="metric-label"><span class="dot test-dot"></span>Test loss</span>
+          <span id="test-loss" class="metric-value">0.000</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label"><span class="dot train-dot"></span>Training loss</span>
+          <span id="train-loss" class="metric-value">0.000</span>
+        </div>
+        <canvas id="loss-chart" width="260" height="64"></canvas>
+      </div>
+
+      <div class="heatmap-wrapper">
+        <canvas id="main-heatmap" width="300" height="300"></canvas>
+        <div class="colorbar">
+          <span class="cb-neg">-1</span>
+          <div class="cb-gradient"></div>
+          <span class="cb-pos">+1</span>
+        </div>
+      </div>
+
+      <div class="output-toggles">
+        <label class="checkbox-label">
+          <input type="checkbox" id="chk-show-test" />
+          <span>Show test data</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="chk-discretize" />
+          <span>Discretize output</span>
+        </label>
+      </div>
+    </aside>
+  </main>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

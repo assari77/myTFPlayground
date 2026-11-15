@@ -1,0 +1,9 @@
+{
+  "name": "my-tf-playground",
+  "version": "1.0.0",
+  "description": "Custom TensorFlow Playground recreation",
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}
