@@ -49,11 +49,8 @@ const state = {
 
 // DOM references
 const el = {
-  btnPlay: document.getElementById("btn-play"),
-  btnReset: document.getElementById("btn-reset"),
-  btnStep: document.getElementById("btn-step"),
-  iconPlay: document.getElementById("icon-play"),
-  iconPause: document.getElementById("icon-pause"),
+  btnStart: document.getElementById("btn-start"),
+  btnStop: document.getElementById("btn-stop"),
   epochCounter: document.getElementById("epoch-counter"),
   datasetList: document.getElementById("dataset-list"),
   btnAddLayer: document.getElementById("btn-add-layer"),
@@ -90,9 +87,17 @@ function formatEpoch(n) {
 
 function setPlaying(playing) {
   state.isPlaying = playing;
-  el.iconPlay.hidden = playing;
-  el.iconPause.hidden = !playing;
+  el.btnStop.disabled = !playing;
   updateLinkStyles();
+}
+
+function startTraining() {
+  resetNetwork();
+  setPlaying(true);
+}
+
+function stopTraining() {
+  setPlaying(false);
 }
 
 function regenerateData() {
@@ -554,12 +559,8 @@ function loop() {
 }
 
 // Wire up controls
-el.btnPlay.addEventListener("click", () => setPlaying(!state.isPlaying));
-el.btnReset.addEventListener("click", resetNetwork);
-el.btnStep.addEventListener("click", () => {
-  setPlaying(false);
-  stepEpoch();
-});
+el.btnStart.addEventListener("click", startTraining);
+el.btnStop.addEventListener("click", stopTraining);
 
 el.btnAddLayer.addEventListener("click", () => {
   if (state.hiddenLayers.length < 6) {
@@ -612,12 +613,11 @@ document.addEventListener("keydown", (e) => {
   if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
   if (e.code === "Space") {
     e.preventDefault();
-    setPlaying(!state.isPlaying);
-  } else if (e.key === "s" || e.key === "S") {
-    setPlaying(false);
-    stepEpoch();
-  } else if (e.key === "r" || e.key === "R") {
-    resetNetwork();
+    if (state.isPlaying) {
+      stopTraining();
+    } else {
+      startTraining();
+    }
   }
 });
 

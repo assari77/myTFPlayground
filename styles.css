@@ -123,50 +123,48 @@ body {
   gap: 10px;
 }
 
-.icon-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text);
+.control-pill-btn {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 6px;
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s, opacity 0.15s;
 }
 
-.icon-btn:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
+.control-pill-btn:active:not(:disabled) {
+  transform: scale(0.96);
 }
 
-.icon-btn:active {
-  transform: scale(0.95);
+.control-pill-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
-.play-btn {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
+.start-btn {
   border: none;
   background: var(--header-bg);
   color: #ffffff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(24, 61, 78, 0.28);
-  transition: background 0.15s, transform 0.1s;
+  box-shadow: 0 2px 6px rgba(24, 61, 78, 0.24);
 }
 
-.play-btn:hover {
+.start-btn:hover:not(:disabled) {
   background: #215167;
 }
 
-.play-btn:active {
-  transform: scale(0.95);
+.stop-btn {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.stop-btn:hover:not(:disabled) {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
 }
 
 .epoch-box {
